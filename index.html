@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">    
+    <title>electron pesado</title>        
+    <script src="node_modules/video.js/dist/video.js"></script>     
+    
+    <link rel="stylesheet" href="node_modules/video.js/dist/video-js.min.css">  
+    <style>
+      ul li {
+        display: inline-block;
+        list-style: none;
+      }
+      .video-js .vjs-control-bar { 
+        display:none;
+        cursor: none;
+      }
+
+    </style>
+  </head>
+  <body>
+    <!--
+    <h1>Hello World!</h1>
+    We are using Node.js <span id="node-version"></span>,
+    Chromium <span id="chrome-version"></span>,
+    and Electron <span id="electron-version"></span>. 
+    -->
+  
+    <div style="display: flex;">
+      <div style="display: flex;">
+
+        <div>
+          <ul style="display:inline-grid; width:200px; overflow-y: scroll; height: 900px;" id="nomemodelo">
+            <li>Modelos</li>
+        
+          </ul>
+        </div>
+
+        <div>      
+          
+
+          <div style="height: 70px;">
+            <div>
+              <div>
+                <div>
+                  <input type="text" name="site" id="site" placeholder="site">
+                  <button onclick="abrirLink()">😈</button>
+                </div>
+    
+                <div>
+                  <input type="text" name="nome" id="nome" placeholder="Nome da modelo" onclick="cole()">
+                  <select name="site2" id="site2">
+                    <option value="camSoda">Cam Soda</option>
+                    <option value="cam4">Cam 4</option>
+                    <option value="chaturbate">Chaturbate</option>
+                    <option value=""></option>
+                  </select>
+                  <button onclick="abrirModelo2()">🍑</button>
+                  <button onclick="addModelo()">📝</button>
+                </div>
+              </div>
+
+              <div>
+                <button onclick="vermodelo('camSoda')">Cam Soda</button>
+                <button onclick="vermodelo('cam4')">Cam 4</button>
+                <button onclick="vermodelo('chaturbate')">Chaturbate</button>
+              </div>
+            </div>
+
+            <div id="status"></div>
+            
+          </div>
+            
+
+          <div>
+            <ul id="videos"></ul>    
+          </div>
+          
+        </div>      
+     
+    </div>
+
+    <!-- You can also require other files to run in this process -->
+    <script src="./renderer.js"></script>
+    <script src="./site.js"></script>
+    <script>
+      var idCod = 0
+      var site 
+
+      function abrirLink(){
+        var v1 = document.createElement('li')
+        var id = document.createAttribute('id')
+        id.value = idCod
+        v1.setAttributeNode(id)
+        var site = document.getElementById('site').value    
+        var nome = "v"+idCod          
+        var texto = "<div id='"+id+"'><video id='" + nome + "' class='video-js vjs-default-skin' poster='https://i.pinimg.com/236x/5a/cf/a0/5acfa0c29aadd5393cc30c2760349aa9--disney-cruiseplan-t-shirts.jpg'  autoplay width='215' height='122' muted>\
+        </video><div style='display: list-item;'><button style='width: 140px;'>" + nome + "</button><button onclick='fullScreen(" + nome + ")'>FULL</button><button onclick='x(" + idCod + ")'>X</button></div></div>"
+        v1.innerHTML = texto
+        document.getElementById('videos').appendChild(v1)
+        
+        var p = videojs(nome)
+        idCod++
+        p.src({ type: "application/x-mpegURL", src: site })
+        p.play()
+
+        document.getElementById('site').value = ""
+        site = ""
+      }
+
+      function modelo(nome, site3){
+        console.log(nome, site)
+        if(site3 === 'camSoda'){
+          camSoda(nome)
+          .then((l) =>{          
+            site = l.site
+            document.getElementById('site').value = site
+          })
+        } else if(site3 === 'cam4'){
+          cam4(nome)
+          .then((l) =>{          
+            site = l.site
+            document.getElementById('site').value = site
+          })
+        }else if(site3 === 'chaturbate'){
+          chaturbate(nome)
+          .then((l) =>{          
+            site = l.site
+            document.getElementById('site').value = site
+          })
+        }
+      }
+
+      function abrirModelo2(){
+        var modelo1 = document.getElementById('nome').value    
+        var site2 = document.getElementById('site2').value
+
+        abrirModelo(modelo1, site2)
+      }
+      
+      function abrirModelo(modelo1, site2){
+        document.getElementById('status').innerHTML = 'inicio'
+        var v1 = document.createElement('li')
+        var id = document.createAttribute('id')
+        id.value = idCod
+        v1.setAttributeNode(id)
+        modelo(modelo1, site2)    
+        
+        var nome = "v" + modelo1          
+        var texto = "<div id='" + idCod + "'><video id='" + nome + "' class='video-js vjs-default-skin' controls  poster='https://i.pinimg.com/236x/5a/cf/a0/5acfa0c29aadd5393cc30c2760349aa9--disney-cruiseplan-t-shirts.jpg'  autoplay width='215' height='122' muted>\
+                     </video><div style='display: list-item;'><button style='width: 140px;'>" + modelo1 + "</button><button onclick='fullScreen(" + nome + ")'>FULL</button><button onclick='x(" + idCod +",&quot;"+modelo1+"&quot;)'>X</button></div></div>"
+        v1.innerHTML = texto
+        setTimeout(() => {
+          document.getElementById('status').innerHTML = 'fim'
+          document.getElementById('videos').appendChild(v1)
+        
+          var p = videojs(nome)
+          p.src({ type: "application/x-mpegURL", src: site })
+          p.play()
+            
+        }, 9000);
+        idCod++
+        document.getElementById('nome').value = ""   
+        document.getElementById('status').innerHTML = ''
+        document.getElementById(modelo1).innerText += ' 🤓'
+        site = ""
+      }
+
+      function fullScreen(nome) {
+        player = videojs(nome)
+        player.requestFullscreen()
+      }
+
+      function x(nome, modelo) {
+        var del = document.getElementById(nome).remove()
+        document.getElementById(modelo).innerText = modelo
+      }
+
+      function cole() {
+        document.execCommand('paste')
+      }
+
+
+    </script>
+    <script src="./banco.js"></script>
+  </body>
+</html>
