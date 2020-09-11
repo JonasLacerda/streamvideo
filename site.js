@@ -3,15 +3,18 @@
 const puppeteer = require("puppeteer-core")
     //const p = require('puppeteer')
 
+var l = {
+    headless: true,
+    defaultViewport: null,
+    executablePath: '/opt/google/chrome/google-chrome'
+    //executablePath: '/usr/bin/google-chrome-stable'
+    //executablePath: 'C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe'
+}
+
+
 
 const chaturbate = async(modelo) => {
-    const browser = await puppeteer.launch({
-        headless: true,
-        defaultViewport: null,
-        executablePath: '/opt/google/chrome/google-chrome'
-        //executablePath: '/usr/bin/google-chrome-stable'
-        //executablePath: 'C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe'
-    })
+    const browser = await puppeteer.launch(l)
     const page = await browser.newPage()
     await page.goto('https://pt.chaturbate.com/' + modelo)
 
@@ -35,13 +38,7 @@ const chaturbate = async(modelo) => {
 
 const camSoda = async(modelo) => {
     console.log('inicio')
-    const browser = await puppeteer.launch({
-        headless: true,
-        defaultViewport: null,
-        executablePath: '/opt/google/chrome/google-chrome'
-        //executablePath: '/usr/bin/google-chrome-stable'
-        //executablePath: 'C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe'
-    })
+    const browser = await puppeteer.launch(l)
     const page = await browser.newPage()
     await page.goto('https://www.camsoda.com/' + modelo)
 
@@ -65,13 +62,7 @@ const camSoda = async(modelo) => {
 }
 
 const cam4 = async(modelo) => {
-    const browser = await puppeteer.launch({
-        headless: true,
-        defaultViewport: null,
-        executablePath: '/opt/google/chrome/google-chrome'
-        //executablePath: '/usr/bin/google-chrome-stable'
-        //executablePath: 'C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe'
-    })
+    const browser = await puppeteer.launch(l)
     const page = await browser.newPage()
     await page.goto('https://pt.cam4.com/' + modelo)
 
@@ -93,14 +84,7 @@ const cam4 = async(modelo) => {
 }
 
 const flirt4free = async(modelo) => {
-    const browser = await puppeteer.launch({
-        headless: false,
-        defaultViewport: null,
-        executablePath: '/usr/bin/google-chrome-stable'
-        //executablePath: 'C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe'
-        //executablePath: 'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe'
-
-    })
+    const browser = await puppeteer.launch(l)
     const page = await browser.newPage()
     await page.goto('https://www.flirt4free.com/?model=' + modelo)
 
