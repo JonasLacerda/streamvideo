@@ -14,30 +14,34 @@ var l = {
 
 
 const chaturbate = async(modelo) => {
+    const m1 = modelo
     const browser = await puppeteer.launch(l)
     const page = await browser.newPage()
-    await page.goto('https://pt.chaturbate.com/' + modelo)
+    await page.goto('https://pt.chaturbate.com/' + m1)
 
     //<a href="#" id="close_entrance_terms">ACEITO</a>
 
 
 
     const info = await page.evaluate(() => {
-
+        
         return {
             //site: videoJsPlayer.cache_["source"].src,
-            site: JSON.parse(initialRoomDossier).hls_source
+            site: JSON.parse(initialRoomDossier).hls_source,
+            //online: document.getElementById('users-tab-default').innerText
                 //localStorage.onlineFollowedTab
                 //videoJsPlayer.cache_["source"].src
         }
-    })
+    })    
+    
     await browser.close()
-        //console.log(info)
+    await abrir1(info, m1) 
     return info
 }
 
-const camSoda = async(modelo) => {
+const camSoda = async(modelo) => {    
     console.log('inicio')
+    
     const browser = await puppeteer.launch(l)
     const page = await browser.newPage()
     await page.goto('https://www.camsoda.com/' + modelo)
@@ -45,22 +49,45 @@ const camSoda = async(modelo) => {
     const info = await page.evaluate(() => {
         return {
             site: videojs.players.video_singleton__video["cache_"].src
-                //localStorage.onlineFollowedTab
-                //videoJsPlayer.cache_["source"].src
         }
     })
+  
     await browser.close()
     var teste = info.site
     teste = teste.substring(0, 4)
     if (teste === 'data') {
         console.log(modelo + " offline")
-        return " "
+        document.getElementById('status').innerHTML = modelo + " offline"
+        return ""
     } else {
         //console.log('fim')
+        await abrir1(info, modelo)
+
         return info
     }
 }
+/*
+const camSodaOnline = async(modelo) => {    
+    console.log('inicio')
+    
+    const browser = await puppeteer.launch(l)
+    const page = await browser.newPage()
+    await page.goto('https://www.camsoda.com')
+    await page.waitFor(3000)
+    const info = await page.evaluate(() => {
+        const names = []
+        for (let index = 0; index < 50; index++) {
+            names.push(document.getElementsByClassName('browse_item')[index])
+        }
+      
+    })
+  
+    await browser.close()
+    console.log(info)
+}
+document.getElementsByClassName('browse_item')
 
+*/
 const cam4 = async(modelo) => {
     const browser = await puppeteer.launch(l)
     const page = await browser.newPage()
@@ -101,10 +128,5 @@ const flirt4free = async(modelo) => {
     console.log(info)
     return info
 }
-
-
-
-
-
 
 module.exports = { cam4, camSoda, chaturbate, flirt4free }

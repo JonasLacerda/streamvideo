@@ -15,6 +15,9 @@
         display:none;
         cursor: none;
       }
+      .imgg{
+        width: 50px;
+      }
 
     </style>
   </head>
@@ -30,15 +33,13 @@
       <div style="display: flex;">
 
         <div>
-          <ul style="display:inline-grid; width:200px; overflow-y: scroll; height: 900px;" id="nomemodelo">
+          <ul style="display:inline-grid; width:200px; overflow-y: scroll; height: 900px; text-align-last: right;" id="nomemodelo">
             <li>Modelos</li>
         
           </ul>
         </div>
 
-        <div>      
-          
-
+        <div> 
           <div style="height: 70px;">
             <div>
               <div>
@@ -53,24 +54,37 @@
                     <option value="camSoda">Cam Soda</option>
                     <option value="cam4">Cam 4</option>
                     <option value="chaturbate">Chaturbate</option>
-                    <option value=""></option>
+                    <option value="flirt4free">flirt4free</option>
                   </select>
                   <button onclick="abrirModelo2()">🍑</button>
                   <button onclick="addModelo()">📝</button>
                 </div>
-              </div>
+
+              
 
               <div>
                 <button onclick="vermodelo('camSoda')">Cam Soda</button>
                 <button onclick="vermodelo('cam4')">Cam 4</button>
                 <button onclick="vermodelo('chaturbate')">Chaturbate</button>
+                <button onclick="vermodelo('flirt4free')">Flirt 4 Free</button>
               </div>
             </div>
+
+            <div>
+              
+              <button onclick="camsodaOline2()">camSodaOnline</button>
+              <div>               
+                copy(CURRENT_USER.user.following)
+              </div>
+            </div>
+          </div>
 
             <div id="status"></div>
             
           </div>
-            
+
+          <br>
+          <br>            
 
           <div>
             <ul id="videos"></ul>    
@@ -95,7 +109,7 @@
         var site = document.getElementById('site').value    
         var nome = "v"+idCod          
         var texto = "<div id='"+id+"'><video id='" + nome + "' class='video-js vjs-default-skin' poster='https://i.pinimg.com/236x/5a/cf/a0/5acfa0c29aadd5393cc30c2760349aa9--disney-cruiseplan-t-shirts.jpg'  autoplay width='215' height='122' muted>\
-        </video><div style='display: list-item;'><button style='width: 140px;'>" + nome + "</button><button onclick='fullScreen(" + nome + ")'>FULL</button><button onclick='x(" + idCod + ")'>X</button></div></div>"
+        </video><div style='display: list-item;'><button onclick=btn('"+name+"') style='width: 140px;'>" + nome + "</button><button onclick='fullScreen(" + nome + ")'>FULL</button><button onclick='x(" + idCod + ")'>X</button></div></div>"
         v1.innerHTML = texto
         document.getElementById('videos').appendChild(v1)
         
@@ -105,6 +119,29 @@
         p.play()
 
         document.getElementById('site').value = ""
+        site = ""
+      }
+
+      function abrir1(link, modelo){
+        console.log(link)
+        var v1 = document.createElement('li')
+        var id = document.createAttribute('id')
+        id.value = idCod
+        v1.setAttributeNode(id)
+        var site = link.site 
+        var nome = "v"+idCod          
+        var texto = "<div id='"+id+"'><video id='" + nome + "' class='video-js vjs-default-skin' poster='https://i.pinimg.com/236x/5a/cf/a0/5acfa0c29aadd5393cc30c2760349aa9--disney-cruiseplan-t-shirts.jpg'  autoplay width='215' height='122' muted>\
+        </video><div style='display: list-item;'><button onclick=btn('"+modelo+"') style='width: 140px;'>" + modelo + "</button><button onclick='fullScreen(" + nome + ")'>FULL</button><button onclick='x(" + idCod + ")'>X</button></div></div>"
+        v1.innerHTML = texto
+        document.getElementById('videos').appendChild(v1)
+        
+        var p = videojs(nome)
+        idCod++
+        p.src({ type: "application/x-mpegURL", src: site })
+        p.play()
+
+        document.getElementById('site').value = ""
+
         site = ""
       }
 
@@ -148,7 +185,7 @@
         
         var nome = "v" + modelo1          
         var texto = "<div id='" + idCod + "'><video id='" + nome + "' class='video-js vjs-default-skin' controls  poster='https://i.pinimg.com/236x/5a/cf/a0/5acfa0c29aadd5393cc30c2760349aa9--disney-cruiseplan-t-shirts.jpg'  autoplay width='215' height='122' muted>\
-                     </video><div style='display: list-item;'><button style='width: 140px;'>" + modelo1 + "</button><button onclick='fullScreen(" + nome + ")'>FULL</button><button onclick='x(" + idCod +",&quot;"+modelo1+"&quot;)'>X</button></div></div>"
+                     </video><div style='display: list-item;'><button onclick=btn('"+modelo1+"') style='width: 140px;'>" + modelo1 + "</button><button onclick='fullScreen(" + nome + ")'>FULL</button><button onclick='x(" + idCod +",&quot;"+modelo1+"&quot;)'>X</button></div></div>"
         v1.innerHTML = texto
         setTimeout(() => {
           document.getElementById('status').innerHTML = 'fim'
@@ -166,6 +203,11 @@
         site = ""
       }
 
+      function online1(m, a){
+        document.getElementById(m).innerText += a
+
+      }
+
       function fullScreen(nome) {
         player = videojs(nome)
         player.requestFullscreen()
@@ -180,8 +222,31 @@
         document.execCommand('paste')
       }
 
+      function btn(name){
+        document.getElementById('nome').value = name
+      }
+
+      function camsodaOline(){
+
+        const names = document.getElementById('nomes').value.toString()
+        
+        var re = /\s*,\s*/;
+        var nameList = names.split(re);
+
+        for (let index = 0; index < 50; index++) {
+          
+          var nome = nameList[index].substring(2,nameList[index].length-1)
+          console.log(nome)
+          var modelo = document.getElementById(nome)
+          if(modelo){
+            modelo.innerText += 'ok'
+          }
+        }
+      }           
 
     </script>
     <script src="./banco.js"></script>
+    <script src="./modelos.js"></script>
+   
   </body>
 </html>
