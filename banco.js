@@ -69,7 +69,7 @@ function vermodelo(site){
             )
         })
         
-    } else {
+    } else if(site === 'cam4'){
         db.transaction(function(tx) {
             tx.executeSql(
             'SELECT * FROM tmodelo WHERE site = ? ORDER BY modelo ASC;', [site],
@@ -82,9 +82,9 @@ function vermodelo(site){
                         var idb = document.createAttribute('id')
                         idb.value = row.modelo.toString()
                         var at = document.createAttribute('onclick')
-                        at.value = 'abrirModelo("'+row.modelo.toString()+'","'+row.site.toString()+'")' 
+                        at.value = 'cam4("'+row.modelo.toString()+'")' 
                         
-                        var text = row.modelo                    
+                        var text = row.modelo + '<img class="imgg" src="https://snapshots.xcdnpro.com/thumbnails/'+row.modelo.toString()+'.jpg">'                    
                         l1.setAttributeNode(at)
                         l1.setAttributeNode(idb)
     
@@ -98,6 +98,7 @@ function vermodelo(site){
     }
 }
 
+//https://snapshots.xcdnpro.com/thumbnails/
 vermodelo('camSoda')
 console.log(db);
 if(!db){

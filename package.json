@@ -22,6 +22,6 @@
   },
   "dependencies": {
     "puppeteer-core": "^5.2.1",
-    "puppeteer-in-electron": "^3.0.3"    
+    "puppeteer-in-electron": "^3.0.3"
   }
 }
