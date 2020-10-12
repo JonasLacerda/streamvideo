@@ -55,7 +55,11 @@
                     <option value="cam4">Cam 4</option>
                     <option value="chaturbate">Chaturbate</option>
                     <option value="flirt4free">flirt4free</option>
+                    <option value="camster">camster</option>
+                    
                   </select>
+
+                  <input type="number" name="vn" id="vn" value="1">
                   <button onclick="abrirModelo2()">🍑</button>
                   <button onclick="addModelo()">📝</button>
                 </div>
@@ -67,6 +71,8 @@
                 <button onclick="vermodelo('cam4')">Cam 4</button>
                 <button onclick="vermodelo('chaturbate')">Chaturbate</button>
                 <button onclick="vermodelo('flirt4free')">Flirt 4 Free</button>
+                <button onclick="vermodelo('camster')">camster</button>
+
               </div>
             </div>
 
@@ -128,7 +134,6 @@
         var id = document.createAttribute('id')
         id.value = idCod
         v1.setAttributeNode(id)
-        var site = link.site 
         var nome = "v"+idCod          
         var texto = "<div id='"+id+"'><video id='" + nome + "' class='video-js vjs-default-skin' poster='https://i.pinimg.com/236x/5a/cf/a0/5acfa0c29aadd5393cc30c2760349aa9--disney-cruiseplan-t-shirts.jpg'  autoplay width='215' height='122' muted>\
         </video><div style='display: list-item;'><button onclick=btn('"+modelo+"') style='width: 140px;'>" + modelo + "</button><button onclick='fullScreen(" + nome + ")'>FULL</button><button onclick='x(" + idCod + ")'>X</button></div></div>"
@@ -137,34 +142,39 @@
         
         var p = videojs(nome)
         idCod++
-        p.src({ type: "application/x-mpegURL", src: site })
+        p.src({ type: "application/x-mpegURL", src: link })
         p.play()
 
-        document.getElementById('site').value = ""
+        document.getElementById('site').value = link
+      }
 
-        site = ""
+      for(i=1; i<21; i++){
+        var v1 = document.createElement('li')
+        var texto = "<video id='v"+i+"' class='video-js vjs-default-skin' poster='https://i.pinimg.com/236x/5a/cf/a0/5acfa0c29aadd5393cc30c2760349aa9--disney-cruiseplan-t-shirts.jpg'  autoplay width='215' height='122' muted></video>\
+              <div style='display: list-item;'>\
+              <div id='nomeModeldo"+i+"'>Nomedamodelo</div>\
+              </button><button onclick='fullScreen("+'"'+"v"+ i +'"'+")'>FULL</button>\
+              </div>"
+        v1.innerHTML = texto
+        document.getElementById('videos').appendChild(v1)
+
+      }
+
+      function abrir2(link, modelo){
+        var video = document.getElementById('vn').value
+        var x = videojs('v'+video)
+        x.src({ type: "application/x-mpegURL", src: link })        
+        document.getElementById('nomeModeldo'+video).innerText = modelo        
       }
 
       function modelo(nome, site3){
         console.log(nome, site)
         if(site3 === 'camSoda'){
-          camSoda(nome)
-          .then((l) =>{          
-            site = l.site
-            document.getElementById('site').value = site
-          })
+          videosite(modelo, 1)
         } else if(site3 === 'cam4'){
-          cam4(nome)
-          .then((l) =>{          
-            site = l.site
-            document.getElementById('site').value = site
-          })
+          videosite(modelo, 2)
         }else if(site3 === 'chaturbate'){
-          chaturbate(nome)
-          .then((l) =>{          
-            site = l.site
-            document.getElementById('site').value = site
-          })
+          videosite(modelo, 0)
         }
       }
 
@@ -242,7 +252,9 @@
             modelo.innerText += 'ok'
           }
         }
-      }           
+      }        
+      
+  
 
     </script>
     <script src="./banco.js"></script>

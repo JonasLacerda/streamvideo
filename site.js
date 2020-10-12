@@ -11,122 +11,102 @@ var l = {
     //executablePath: 'C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe'
 }
 
+var site = [
+    {
+        id: 'chaturbate',
+        link: 'https://pt.chaturbate.com/',        
+    },
+    {
+        id: 'camSoda',
+        link: 'https://www.camsoda.com/'
+    },
+    {
+        id:'cam4',
+        link: 'https://pt.cam4.com/'
+    },
+    {
+        id: 'flirt4free',
+        link: 'https://www.flirt4free.com/?model='
+    },
+    {
+        id: 'camster',
+        link: 'https://www.camster.com/?model='
+    }
+]
 
 
-const chaturbate = async(modelo) => {
+const videosite = async(modelo, p) => {
     const m1 = modelo
     const browser = await puppeteer.launch(l)
     const page = await browser.newPage()
-    await page.goto('https://pt.chaturbate.com/' + m1)
-
+    const site0 = site[p]['link']+m1
+    console.log(site0)
+    await page.goto(site0)
+    
     //<a href="#" id="close_entrance_terms">ACEITO</a>
 
+    if(p == 0){
+        const info = await page.evaluate(() => {                 
+            return {                               
+                site: JSON.parse(initialRoomDossier).hls_source               
+            }
+        })  
 
+        abrir2(info.site, m1)      
 
-    const info = await page.evaluate(() => {
-        
-        return {
-            //site: videoJsPlayer.cache_["source"].src,
-            site: JSON.parse(initialRoomDossier).hls_source,
-            //online: document.getElementById('users-tab-default').innerText
-                //localStorage.onlineFollowedTab
-                //videoJsPlayer.cache_["source"].src
-        }
-    })    
-    
-    await browser.close()
-    await abrir1(info, m1) 
-    return info
-}
-
-const camSoda = async(modelo) => {    
-    console.log('inicio')
-    
-    const browser = await puppeteer.launch(l)
-    const page = await browser.newPage()
-    await page.goto('https://www.camsoda.com/' + modelo)
-
-    const info = await page.evaluate(() => {
-        return {
-            site: videojs.players.video_singleton__video["cache_"].src
-        }
-    })
-  
-    await browser.close()
-    var teste = info.site
-    teste = teste.substring(0, 4)
-    if (teste === 'data') {
-        console.log(modelo + " offline")
-        document.getElementById('status').innerHTML = modelo + " offline"
-        return ""
-    } else {
-        //console.log('fim')
-        await abrir1(info, modelo)
-
-        return info
     }
-}
-/*
-const camSodaOnline = async(modelo) => {    
-    console.log('inicio')
+
+    else if(p == 1){
+        const info = await page.evaluate(() => {                 
+            return {                
+                site: videojs.players.video_singleton__video["cache_"].src
+            }
+        })  
+
+        abrir2(info.site, m1) 
+
+    }
+
+    else if(p == 2){
+        const info = await page.evaluate(() => {                 
+            return {                
+                site: lastHlsInstance.streamController.fragCurrent.baseurl
+            }
+        })  
+
+        abrir2(info.site, m1) 
+
+    }
+
+    else if(p == 3){
+        const info = await page.evaluate(() => {                 
+            return {                
+                site: VideoController.currentPlayer.networkUrl
+            }
+        })  
+
+        abrir2(info.site, m1) 
+
+    }
+    else if(p == 4){
+        await page.waitFor('nav[class="btn-wrapper chat-nav model-menu-nav model-information"]', {delay: 300})
+        await page.mouse.wheel({deltaY: 800})
+        await page.waitFor('div[class="chat-bio-wrap"]')
+        const info = await page.evaluate(() => {                           
+            return {             
+                site: VideoController.currentPlayer.hls.url,
+                site2: VideoController.currentPlayer.networkUrl                
+            }
+        })  
+        console.log(info)
+        abrir2(info.site, m1) 
+
+    }
     
-    const browser = await puppeteer.launch(l)
-    const page = await browser.newPage()
-    await page.goto('https://www.camsoda.com')
-    await page.waitFor(3000)
-    const info = await page.evaluate(() => {
-        const names = []
-        for (let index = 0; index < 50; index++) {
-            names.push(document.getElementsByClassName('browse_item')[index])
-        }
-      
-    })
-  
-    await browser.close()
-    console.log(info)
-}
-document.getElementsByClassName('browse_item')
-
-*/
-const cam4 = async(modelo) => {
-    const browser = await puppeteer.launch(l)
-    const page = await browser.newPage()
-    await page.goto('https://pt.cam4.com/' + modelo)
-
-    //<a href="#" id="close_entrance_terms">ACEITO</a>
-
-
-
-    const info = await page.evaluate(() => {
-        return {
-            site: lastHlsInstance.streamController.fragCurrent.baseurl
-                //t: document.getElementById("Cam4HLSPlayer")
-                //localStorage.onlineFollowedTab
-                //videoJsPlayer.cache_["source"].src
-        }
-    })
-    await browser.close()
-        //console.log(info)
-    return info
+    browser.close()       
 }
 
-const flirt4free = async(modelo) => {
-    const browser = await puppeteer.launch(l)
-    const page = await browser.newPage()
-    await page.goto('https://www.flirt4free.com/?model=' + modelo)
 
-    //<a href="#" id="close_entrance_terms">ACEITO</a>
 
-    const info = await page.evaluate(() => {
-        return {
-            site: VideoController.currentPlayer.networkUrl
-                //localStorage.onlineFollowedTab
-                //videoJsPlayer.cache_["source"].src
-        }
-    })
-    await browser.close()
-    console.log(info)
-    return info
-}
 
-module.exports = { cam4, camSoda, chaturbate, flirt4free }
+module.exports = { videosite }
