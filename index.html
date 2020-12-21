@@ -148,12 +148,13 @@
         document.getElementById('site').value = link
       }
 
-      for(i=1; i<21; i++){
+      for(i=1; i<29; i++){
         var v1 = document.createElement('li')
         var texto = "<video id='v"+i+"' class='video-js vjs-default-skin' poster='https://i.pinimg.com/236x/5a/cf/a0/5acfa0c29aadd5393cc30c2760349aa9--disney-cruiseplan-t-shirts.jpg'  autoplay width='215' height='122' muted></video>\
-              <div style='display: list-item;'>\
+              <div style='display: flex;'>\
+              <button onclick='idvideo("+i+")'>"+i+"</button>\
               <div id='nomeModeldo"+i+"'>Nomedamodelo</div>\
-              </button><button onclick='fullScreen("+'"'+"v"+ i +'"'+")'>FULL</button>\
+              <button onclick='fullScreen("+'"'+"v"+ i +'"'+")'>FULL</button>\
               </div>"
         v1.innerHTML = texto
         document.getElementById('videos').appendChild(v1)
@@ -164,7 +165,13 @@
         var video = document.getElementById('vn').value
         var x = videojs('v'+video)
         x.src({ type: "application/x-mpegURL", src: link })        
-        document.getElementById('nomeModeldo'+video).innerText = modelo        
+        document.getElementById('nomeModeldo'+video).innerText = modelo      
+        document.getElementById('site').value = link  
+        var vn1 = document.getElementById('vn').value 
+        var vn2 = parseInt(vn1) +1
+        console.log(vn2)
+        document.getElementById('vn').value = vn2
+        
       }
 
       function modelo(nome, site3){
@@ -211,6 +218,10 @@
         document.getElementById('status').innerHTML = ''
         document.getElementById(modelo1).innerText += ' 🤓'
         site = ""
+      }
+      
+      function idvideo(id){
+        document.getElementById('vn').value = id
       }
 
       function online1(m, a){
